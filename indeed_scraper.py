@@ -8,18 +8,20 @@ from bs4 import BeautifulSoup
 import urllib2
 
 
-jobkey = raw_input("Job title/keyword: ")
-region = raw_input("Country, province, or city: ")
+jobkey = raw_input("Job title/keyword: ") #Get the job title/keyword input from user as string
+region = raw_input("Country, province, or city: ") #Get the geographic region from user as string
 
-url = "http://ca.indeed.com/jobs?q={0}&l={1}".format(jobkey, region)
+url = "http://ca.indeed.com/jobs?q={0}&l={1}".format(jobkey, region) #create the url, including the search terms
 
-file = open('urls.txt', 'a')
+file = open('urls.txt', 'a') #open/create the .txt file to contain the result urls
 
-f = urllib2.urlopen(url)
+f = urllib2.urlopen(url) #open the completed url
 
-soup = BeautifulSoup(f, 'lxml')
-divs = soup.findAll("h2", { "class" : "jobtitle" })
+soup = BeautifulSoup(f, 'lxml') #get and parse the resulting indeed.com result page
+divs = soup.findAll("h2", { "class" : "jobtitle" }) #find all <h2> tags containing the glass called "jobtitle"
 
+#loop through the results, grab the href, strip unnecessary characters and place the information into a complete url
+#then write the resulting url to file
 for x in range (0,10):
     string1 = str(divs[x])
     sub_string = string1.split(' ')
@@ -28,5 +30,5 @@ for x in range (0,10):
     address = address.lstrip('href=')
     file.write("http://ca.indeed.com"+address+'\n')
 
-print"Script Successful"
-file.close()
+print"Script Successful" #let user know the program ran successfully
+file.close() #close the file
